@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test/MyHomePage.dart';
+import 'package:test/screen/HomeScreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,10 +15,18 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+        ),
         useMaterial3: true,
       ),
-      home: MyHomePage(),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color.fromARGB(255, 0, 0, 0),
+        ),
+        useMaterial3: true,
+      ),
+      home: HomeScreen(),
     );
   }
 }
