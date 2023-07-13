@@ -1,7 +1,9 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:test/Data/Chart.dart';
 
 import '../controller/SimpleController.dart';
 
@@ -20,9 +22,7 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 GestureDetector(
-                  onTap: () {
-                    Get.toNamed('/first');
-                  },
+                  onTap: () {},
                   child: Container(
                     margin: EdgeInsets.only(top: 10),
                     height: 150,
@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
                     child: Text(
-                      "보유 금액",
+                      "Symbol 선택",
                       style: TextStyle(
                         fontSize: 30,
                       ),
@@ -67,7 +67,12 @@ class HomeScreen extends StatelessWidget {
                         color: Theme.of(context).colorScheme.primaryContainer,
                       ),
                       child: Text(
-                        Get.find<SimpleController>().response.value,
+                        "서버 시간 : " +
+                            Get.find<SimpleController>()
+                                .response
+                                .value
+                                .serverTime
+                                .toString(),
                         style: TextStyle(
                           fontSize: 30,
                         ),
@@ -90,10 +95,12 @@ class HomeScreen extends StatelessWidget {
                     ],
                     color: Theme.of(context).colorScheme.primaryContainer,
                   ),
-                  child: Text(
-                    "과거 내역",
-                    style: TextStyle(
-                      fontSize: 30,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: LineChart(
+                        mainChart(context),
+                      ),
                     ),
                   ),
                 ),
