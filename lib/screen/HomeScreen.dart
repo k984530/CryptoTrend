@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+import '../controller/SimpleController.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -44,25 +46,32 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 40),
-                  height: 300,
-                  width: size.width * 0.9,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).colorScheme.shadow,
-                        offset: Offset(10, 10),
-                        blurRadius: 10,
+                Obx(
+                  () => GestureDetector(
+                    onTap: () async {
+                      await Get.find<SimpleController>().test();
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(top: 40),
+                      height: 300,
+                      width: size.width * 0.9,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Theme.of(context).colorScheme.shadow,
+                            offset: Offset(10, 10),
+                            blurRadius: 10,
+                          ),
+                        ],
+                        color: Theme.of(context).colorScheme.primaryContainer,
                       ),
-                    ],
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                  ),
-                  child: Text(
-                    "그래프",
-                    style: TextStyle(
-                      fontSize: 30,
+                      child: Text(
+                        Get.find<SimpleController>().response.value,
+                        style: TextStyle(
+                          fontSize: 30,
+                        ),
+                      ),
                     ),
                   ),
                 ),
