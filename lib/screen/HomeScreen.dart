@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -9,32 +10,37 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  height: 150,
-                  width: size.width * 0.9,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).colorScheme.shadow,
-                        offset: Offset(10, 10),
-                        blurRadius: 10,
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed('/first');
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10),
+                    height: 150,
+                    width: size.width * 0.9,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).colorScheme.shadow,
+                          offset: Offset(10, 10),
+                          blurRadius: 10,
+                        ),
+                      ],
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                    ),
+                    child: Text(
+                      "보유 금액",
+                      style: TextStyle(
+                        fontSize: 30,
                       ),
-                    ],
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                  ),
-                  child: Text(
-                    "보유 금액",
-                    style: TextStyle(
-                      fontSize: 30,
                     ),
                   ),
                 ),
