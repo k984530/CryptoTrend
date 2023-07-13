@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 LineChartData mainChart(BuildContext context) {
   return LineChartData(
     gridData: FlGridData(
-      show: false,
+      show: true,
       drawVerticalLine: true,
       getDrawingHorizontalLine: (value) {
         return FlLine(
-          color: Theme.of(context).colorScheme.onPrimaryContainer,
-          strokeWidth: 1,
+          color: Theme.of(context).colorScheme.primary,
+          strokeWidth: 2,
         );
       },
       getDrawingVerticalLine: (value) {
         return FlLine(
-          color: Theme.of(context).colorScheme.onPrimaryContainer,
-          strokeWidth: 1,
+          color: Theme.of(context).colorScheme.primary,
+          strokeWidth: 2,
         );
       },
     ),
@@ -26,15 +26,15 @@ LineChartData mainChart(BuildContext context) {
     ),
     borderData: FlBorderData(
         show: true,
-        border: Border.all(
-            color: Theme.of(context).colorScheme.onPrimaryContainer, width: 1)),
+        border:
+            Border.all(color: Theme.of(context).colorScheme.outline, width: 1)),
     minX: 0,
     maxX: 11,
     minY: 0,
     maxY: 6,
     lineBarsData: [
       LineChartBarData(
-        color: Theme.of(context).colorScheme.onPrimaryContainer,
+        color: Theme.of(context).colorScheme.primary,
         spots: [
           FlSpot(0, 3),
           FlSpot(2.6, 2),
@@ -48,9 +48,10 @@ LineChartData mainChart(BuildContext context) {
         barWidth: 5,
         isStrokeCapRound: true,
         dotData: FlDotData(
-          show: true,
+          show: false,
         ),
         belowBarData: BarAreaData(
+          color: Theme.of(context).colorScheme.primary,
           show: true,
         ),
       ),

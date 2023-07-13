@@ -13,8 +13,13 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final surfaceContainer = Color.fromARGB(
+        Theme.of(context).colorScheme.surface.alpha,
+        Theme.of(context).colorScheme.surface.red * 2,
+        Theme.of(context).colorScheme.surface.green * 2,
+        Theme.of(context).colorScheme.surface.blue * 2);
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.secondary,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Center(
@@ -24,6 +29,7 @@ class HomeScreen extends StatelessWidget {
                 GestureDetector(
                   onTap: () {},
                   child: Container(
+                    alignment: Alignment.center,
                     margin: EdgeInsets.only(top: 10),
                     height: 150,
                     width: size.width * 0.9,
@@ -36,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                           blurRadius: 10,
                         ),
                       ],
-                      color: Theme.of(context).colorScheme.primaryContainer,
+                      color: surfaceContainer,
                     ),
                     child: Text(
                       "Symbol 선택",
@@ -52,19 +58,20 @@ class HomeScreen extends StatelessWidget {
                       await Get.find<SimpleController>().test();
                     },
                     child: Container(
+                      alignment: Alignment.center,
                       margin: EdgeInsets.only(top: 40),
                       height: 300,
                       width: size.width * 0.9,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Theme.of(context).colorScheme.shadow,
-                            offset: Offset(10, 10),
-                            blurRadius: 10,
-                          ),
-                        ],
-                        color: Theme.of(context).colorScheme.primaryContainer,
+                        // boxShadow: [
+                        //   BoxShadow(
+                        //     color: Theme.of(context).colorScheme.shadow,
+                        //     offset: Offset(10, 10),
+                        //     blurRadius: 10,
+                        //   ),
+                        // ],
+                        color: surfaceContainer,
                       ),
                       child: Text(
                         "서버 시간 : " +
@@ -74,7 +81,7 @@ class HomeScreen extends StatelessWidget {
                                 .serverTime
                                 .toString(),
                         style: TextStyle(
-                          fontSize: 30,
+                          fontSize: 12,
                         ),
                       ),
                     ),
@@ -93,7 +100,7 @@ class HomeScreen extends StatelessWidget {
                         blurRadius: 10,
                       ),
                     ],
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                    color: surfaceContainer,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
