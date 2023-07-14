@@ -8,13 +8,13 @@ LineChartData mainChart(BuildContext context) {
       drawVerticalLine: true,
       getDrawingHorizontalLine: (value) {
         return FlLine(
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.secondary,
           strokeWidth: 2,
         );
       },
       getDrawingVerticalLine: (value) {
         return FlLine(
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.secondary,
           strokeWidth: 2,
         );
       },
@@ -34,7 +34,7 @@ LineChartData mainChart(BuildContext context) {
     maxY: 6,
     lineBarsData: [
       LineChartBarData(
-        color: Theme.of(context).colorScheme.primary,
+        color: Theme.of(context).colorScheme.secondary,
         spots: [
           FlSpot(0, 3),
           FlSpot(2.6, 2),
@@ -51,7 +51,7 @@ LineChartData mainChart(BuildContext context) {
           show: false,
         ),
         belowBarData: BarAreaData(
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.secondary,
           show: true,
         ),
       ),
