@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:test/Data/Chart.dart';
+import 'package:test/controller/binanceApiController.dart';
 
 import '../controller/SimpleController.dart';
 
@@ -12,6 +13,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(BinanceApiController());
     final Size size = MediaQuery.of(context).size;
     final surfaceContainer = Color.fromARGB(
         Theme.of(context).colorScheme.surface.alpha,
@@ -55,7 +57,7 @@ class HomeScreen extends StatelessWidget {
                 Obx(
                   () => GestureDetector(
                     onTap: () async {
-                      await Get.find<SimpleController>().test();
+                      await Get.find<BinanceApiController>().GetSymbol();
                     },
                     child: Container(
                       alignment: Alignment.center,
