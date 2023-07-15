@@ -8,6 +8,12 @@ class BinanceApiController extends GetxController {
   RxList SymbolList = [].obs;
   RxMap SymbolSelect = {}.obs;
 
+  @override
+  onInit() {
+    super.onInit();
+    GetSymbol();
+  }
+
   Future<void> GetSymbol() async {
     final request = Uri.parse(baseURL + DataURL);
     await http.get(request).then((value) {
