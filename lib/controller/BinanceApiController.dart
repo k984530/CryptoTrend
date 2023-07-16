@@ -13,7 +13,7 @@ class BinanceApiController extends GetxController {
   final String DataURL = '/fapi/v1/exchangeInfo';
   final String CandleURL = "/fapi/v1/klines";
   RxString RatioString = ''.obs;
-  IntervalTime interval = IntervalTime.m5;
+  Rx<IntervalTime> interval = IntervalTime.m5.obs;
   RxList SymbolList = [].obs;
   RxMap SymbolSelect = {}.obs;
   RxMap SymbolCandle = {}.obs;
@@ -40,17 +40,17 @@ class BinanceApiController extends GetxController {
     });
   }
 
-  SelectInterval(IntervalTime t) {
-    interval = t;
-    update();
+  SelectInterval(IntervalTime t) async {
+    interval.value = t;
+    await SelectSymbol('');
   }
 
   SelectSymbol(String symbol) async {
-    SymbolSelect[symbol] = !SymbolSelect[symbol];
+    if (symbol != '') SymbolSelect[symbol] = !SymbolSelect[symbol];
     RatioString.value = '';
     for (String symbol2 in SymbolSelect.keys) {
       if (SymbolSelect[symbol2]) {
-        GetCandle(symbol2, interval).then(
+        GetCandle(symbol2, interval.value).then(
           (value) {
             GetRecentTrend(symbol2);
           },

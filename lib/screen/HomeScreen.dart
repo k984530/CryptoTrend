@@ -270,7 +270,7 @@ class HomeScreen extends StatelessWidget {
                                                         .SymbolList[index]!]!
                                                     ? Theme.of(context)
                                                         .colorScheme
-                                                        .tertiaryContainer
+                                                        .primaryContainer
                                                     : Theme.of(context)
                                                         .colorScheme
                                                         .tertiaryContainer
@@ -285,7 +285,9 @@ class HomeScreen extends StatelessWidget {
                                                           .SymbolList[index]!]!
                                                       ? Colors.black
                                                           .withOpacity(0)
-                                                      : Colors.white54,
+                                                      : Theme.of(context)
+                                                          .colorScheme
+                                                          .outline,
                                                 ),
                                               ),
                                               child: Text(
@@ -299,10 +301,10 @@ class HomeScreen extends StatelessWidget {
                                                           .SymbolList[index]!]!
                                                       ? Theme.of(context)
                                                           .colorScheme
-                                                          .onTertiaryContainer
+                                                          .onPrimaryContainer
                                                       : Theme.of(context)
                                                           .colorScheme
-                                                          .secondary,
+                                                          .outline,
                                                 ),
                                               ), // 각 항목의 텍스트
                                             ),
@@ -325,36 +327,56 @@ class HomeScreen extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         itemCount: IntervalTime.values.length,
                         itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Get.find<BinanceApiController>().SelectInterval();
-                              print(Get.find<BinanceApiController>().interval);
-                            },
-                            child: Container(
-                              margin: EdgeInsets.symmetric(
-                                vertical: 25,
-                                horizontal: 5,
-                              ),
-                              height: 50,
-                              width: 50,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Theme.of(context).colorScheme.shadow,
-                                    offset: Offset(10, 10),
-                                    blurRadius: 10,
-                                  ),
-                                ],
-                                borderRadius: BorderRadius.circular(5),
-                                color:
-                                    Get.find<BinanceApiController>().interval ==
-                                            IntervalTime.values[index]
-                                        ? Theme.of(context).colorScheme.tertiary
-                                        : surfaceContainer,
-                              ),
-                              child: Text(
-                                IntervalTime.values[index].time,
+                          return Obx(
+                            () => GestureDetector(
+                              onTap: () {
+                                Get.find<BinanceApiController>()
+                                    .SelectInterval(IntervalTime.values[index]);
+                                print(Get.find<BinanceApiController>()
+                                    .interval
+                                    .value);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(
+                                  vertical: 25,
+                                  horizontal: 5,
+                                ),
+                                height: 50,
+                                width: 50,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color:
+                                          Theme.of(context).colorScheme.shadow,
+                                      offset: Offset(10, 10),
+                                      blurRadius: 10,
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Get.find<BinanceApiController>()
+                                              .interval
+                                              .value ==
+                                          IntervalTime.values[index]
+                                      ? Theme.of(context)
+                                          .colorScheme
+                                          .primaryContainer
+                                      : surfaceContainer,
+                                ),
+                                child: Text(
+                                  IntervalTime.values[index].time,
+                                  style: TextStyle(
+                                      color: Get.find<BinanceApiController>()
+                                                  .interval
+                                                  .value ==
+                                              IntervalTime.values[index]
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .onSecondaryContainer
+                                          : Theme.of(context)
+                                              .colorScheme
+                                              .outline),
+                                ),
                               ),
                             ),
                           );
@@ -362,10 +384,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () async {
-                        Get.find<BinanceApiController>()
-                            .GetCandle("BTCUSDT", IntervalTime.m1);
-                      },
+                      onTap: () async {},
                       child: Container(
                         alignment: Alignment.center,
                         height: 300,
