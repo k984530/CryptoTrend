@@ -5,6 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:test/Data/Chart.dart';
+import 'package:test/Data/DataList.dart';
+import 'package:test/controller/KellyBet.dart';
 import 'package:test/controller/binanceApiController.dart';
 
 import '../controller/SimpleController.dart';
@@ -14,6 +16,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(KellyBet());
     Get.put(BinanceApiController());
     final Size size = MediaQuery.of(context).size;
     final surfaceContainer = Color.fromARGB(
@@ -32,240 +35,234 @@ class HomeScreen extends StatelessWidget {
             child: Center(
               child: Obx(
                 () => Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            alignment: Alignment.center,
-                            margin:
-                                EdgeInsets.only(top: 30, left: 20, right: 25),
-                            height: 150,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Theme.of(context).colorScheme.shadow,
-                                  offset: Offset(10, 10),
-                                  blurRadius: 10,
-                                ),
-                              ],
-                              color: surfaceContainer,
-                            ),
-                            child: Expanded(
-                              flex: 1,
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: 5,
+                    SizedBox(
+                      height: 250,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin:
+                                  EdgeInsets.only(top: 30, left: 20, right: 25),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Theme.of(context).colorScheme.shadow,
+                                    offset: Offset(10, 10),
+                                    blurRadius: 10,
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          '승리 확률',
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: TextField(
-                                          textAlign: TextAlign.center,
-                                          onChanged: (text) {
-                                            
-                                          },
-                                          decoration: InputDecoration(
-                                            isDense: true,
-                                            contentPadding: EdgeInsets.all(5),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0)),
-                                              borderSide: BorderSide(
-                                                  width: 1,
-                                                  color: Colors.redAccent),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0)),
-                                              borderSide: BorderSide(
-                                                  width: 1, color: Colors.blue),
-                                            ),
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0)),
-                                            ),
-                                          ),
-                                          keyboardType: TextInputType.number,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          '수익률',
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: TextField(
-                                          textAlign: TextAlign.center,
-                                          onChanged: (text) {},
-                                          decoration: InputDecoration(
-                                            isDense: true,
-                                            contentPadding: EdgeInsets.all(5),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0)),
-                                              borderSide: BorderSide(
-                                                  width: 1,
-                                                  color: Colors.redAccent),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0)),
-                                              borderSide: BorderSide(
-                                                  width: 1, color: Colors.blue),
-                                            ),
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0)),
-                                            ),
-                                          ),
-                                          keyboardType: TextInputType.number,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          '손실률',
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: TextField(
-                                          textAlign: TextAlign.center,
-                                          onChanged: (text) {},
-                                          decoration: InputDecoration(
-                                            isDense: true,
-                                            contentPadding: EdgeInsets.all(5),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0)),
-                                              borderSide: BorderSide(
-                                                  width: 1,
-                                                  color: Colors.redAccent),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0)),
-                                              borderSide: BorderSide(
-                                                  width: 1, color: Colors.blue),
-                                            ),
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0)),
-                                            ),
-                                          ),
-                                          keyboardType: TextInputType.number,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                      margin: EdgeInsets.all(5),
-                                      child: Text('최적의 비율 ')),
                                 ],
+                                color: surfaceContainer,
+                              ),
+                              child: Expanded(
+                                flex: 1,
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 45,
+                                      child: Center(
+                                        child: Text(
+                                          "Kelly Bet",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: Text(
+                                            '승리 확률 :',
+                                            textAlign: TextAlign.end,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: SizedBox(
+                                            width: 50,
+                                            child: TextField(
+                                              textAlign: TextAlign.center,
+                                              onChanged: (text) {
+                                                Get.find<KellyBet>()
+                                                        .winRate
+                                                        .value =
+                                                    double.parse(text) / 100;
+                                                Get.find<KellyBet>()
+                                                        .lossRate
+                                                        .value =
+                                                    1 -
+                                                        double.parse(text) /
+                                                            100;
+                                                Get.find<KellyBet>()
+                                                    .calculate();
+                                              },
+                                              decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                isDense: true,
+                                              ),
+                                              keyboardType:
+                                                  TextInputType.number,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            "%",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: Text(
+                                            '수익률 :',
+                                            textAlign: TextAlign.end,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: TextField(
+                                            textAlign: TextAlign.center,
+                                            onChanged: (text) {
+                                              Get.find<KellyBet>()
+                                                      .profit
+                                                      .value =
+                                                  double.parse(text) / 100;
+
+                                              Get.find<KellyBet>().calculate();
+                                            },
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              isDense: true,
+                                            ),
+                                            keyboardType: TextInputType.number,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            "%",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: Text(
+                                            '손실률 :',
+                                            textAlign: TextAlign.end,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: TextField(
+                                            textAlign: TextAlign.center,
+                                            onChanged: (text) {
+                                              Get.find<KellyBet>().loss.value =
+                                                  double.parse(text) / 100;
+                                              Get.find<KellyBet>().calculate();
+                                            },
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              isDense: true,
+                                            ),
+                                            keyboardType: TextInputType.number,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            "%",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        '최적의 비율 ' +
+                                            (Get.find<KellyBet>().result.value *
+                                                    100)
+                                                .toStringAsFixed(2) +
+                                            " % ",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        '100번 : ' +
+                                            (Get.find<KellyBet>()
+                                                    .expectResult
+                                                    .value)
+                                                .toStringAsFixed(2) +
+                                            " x",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(top: 30, right: 20),
-                            height: 150,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Theme.of(context).colorScheme.shadow,
-                                  offset: Offset(10, 10),
-                                  blurRadius: 10,
-                                ),
-                              ],
-                              color: surfaceContainer,
-                            ),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  flex: 3,
-                                  child: ListView.builder(
-                                    itemCount: Get.find<BinanceApiController>()
-                                        .SymbolList
-                                        .length, // 항목 개수
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      print(Get.find<BinanceApiController>()
-                                              .SymbolSelect[
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              margin: EdgeInsets.only(top: 30, right: 20),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Theme.of(context).colorScheme.shadow,
+                                    offset: Offset(10, 10),
+                                    blurRadius: 10,
+                                  ),
+                                ],
+                                color: surfaceContainer,
+                              ),
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    flex: 3,
+                                    child: ListView.builder(
+                                      itemCount:
                                           Get.find<BinanceApiController>()
-                                              .SymbolList[index]!]!);
-                                      return Obx(
-                                        () => GestureDetector(
-                                          onTap: () {
-                                            Get.find<BinanceApiController>()
-                                                .SelectSymbol(Get.find<
-                                                        BinanceApiController>()
-                                                    .SymbolList[index]!);
-                                          },
-                                          child: Container(
-                                            margin: EdgeInsets.all(5),
-                                            padding: EdgeInsets.all(5),
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              color: Get.find<
-                                                          BinanceApiController>()
-                                                      .SymbolSelect[Get.find<
-                                                          BinanceApiController>()
-                                                      .SymbolList[index]!]!
-                                                  ? Theme.of(context)
-                                                      .colorScheme
-                                                      .tertiaryContainer
-                                                  : Theme.of(context)
-                                                      .colorScheme
-                                                      .tertiaryContainer
-                                                      .withOpacity(0),
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              border: Border.all(
-                                                color: Get.find<
-                                                            BinanceApiController>()
-                                                        .SymbolSelect[Get.find<
-                                                            BinanceApiController>()
-                                                        .SymbolList[index]!]!
-                                                    ? Colors.black
-                                                        .withOpacity(0)
-                                                    : Colors.white54,
-                                              ),
-                                            ),
-                                            child: Text(
+                                              .SymbolList
+                                              .length, // 항목 개수
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Obx(
+                                          () => GestureDetector(
+                                            onTap: () {
                                               Get.find<BinanceApiController>()
-                                                  .SymbolList[index]!,
-                                              style: TextStyle(
+                                                  .SelectSymbol(Get.find<
+                                                          BinanceApiController>()
+                                                      .SymbolList[index]!);
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.all(5),
+                                              padding: EdgeInsets.all(5),
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
                                                 color: Get.find<
                                                             BinanceApiController>()
                                                         .SymbolSelect[Get.find<
@@ -273,29 +270,104 @@ class HomeScreen extends StatelessWidget {
                                                         .SymbolList[index]!]!
                                                     ? Theme.of(context)
                                                         .colorScheme
-                                                        .onTertiaryContainer
+                                                        .tertiaryContainer
                                                     : Theme.of(context)
                                                         .colorScheme
-                                                        .secondary,
+                                                        .tertiaryContainer
+                                                        .withOpacity(0),
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                border: Border.all(
+                                                  color: Get.find<
+                                                              BinanceApiController>()
+                                                          .SymbolSelect[Get.find<
+                                                              BinanceApiController>()
+                                                          .SymbolList[index]!]!
+                                                      ? Colors.black
+                                                          .withOpacity(0)
+                                                      : Colors.white54,
+                                                ),
                                               ),
-                                            ), // 각 항목의 텍스트
+                                              child: Text(
+                                                Get.find<BinanceApiController>()
+                                                    .SymbolList[index]!,
+                                                style: TextStyle(
+                                                  color: Get.find<
+                                                              BinanceApiController>()
+                                                          .SymbolSelect[Get.find<
+                                                              BinanceApiController>()
+                                                          .SymbolList[index]!]!
+                                                      ? Theme.of(context)
+                                                          .colorScheme
+                                                          .onTertiaryContainer
+                                                      : Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
+                                                ),
+                                              ), // 각 항목의 텍스트
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
+                                        );
+                                      },
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 90,
+                      width: size.width,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: IntervalTime.values.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Get.find<BinanceApiController>().SelectInterval();
+                              print(Get.find<BinanceApiController>().interval);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
+                                vertical: 25,
+                                horizontal: 5,
+                              ),
+                              height: 50,
+                              width: 50,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Theme.of(context).colorScheme.shadow,
+                                    offset: Offset(10, 10),
+                                    blurRadius: 10,
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.circular(5),
+                                color:
+                                    Get.find<BinanceApiController>().interval ==
+                                            IntervalTime.values[index]
+                                        ? Theme.of(context).colorScheme.tertiary
+                                        : surfaceContainer,
+                              ),
+                              child: Text(
+                                IntervalTime.values[index].time,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                     GestureDetector(
-                      onTap: () async {},
+                      onTap: () async {
+                        Get.find<BinanceApiController>()
+                            .GetCandle("BTCUSDT", IntervalTime.m1);
+                      },
                       child: Container(
                         alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 40),
                         height: 300,
                         width: size.width * 0.9,
                         decoration: BoxDecoration(
@@ -310,12 +382,7 @@ class HomeScreen extends StatelessWidget {
                           color: surfaceContainer,
                         ),
                         child: Text(
-                          "서버 시간 : " +
-                              Get.find<SimpleController>()
-                                  .response
-                                  .value
-                                  .serverTime
-                                  .toString(),
+                          Get.find<BinanceApiController>().RatioString.value,
                           style: TextStyle(
                             fontSize: 12,
                           ),
