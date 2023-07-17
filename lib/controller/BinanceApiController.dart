@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:http/http.dart' as http;
 import 'package:test/binanceObject/BinanceCandle.dart';
 import 'package:test/binanceObject/SymbolInfo.dart';
@@ -12,7 +14,7 @@ class BinanceApiController extends GetxController {
   final String baseURL = 'https://fapi.binance.com';
   final String DataURL = '/fapi/v1/exchangeInfo';
   final String CandleURL = "/fapi/v1/klines";
-  RxString RatioString = ''.obs;
+  RxMap SymbolRatio = {}.obs;
   Rx<IntervalTime> interval = IntervalTime.m5.obs;
   RxList SymbolList = [].obs;
   RxMap SymbolSelect = {}.obs;
@@ -23,6 +25,20 @@ class BinanceApiController extends GetxController {
   onInit() {
     super.onInit();
     GetSymbol();
+    Timer.periodic(
+      Duration(seconds: 5),
+      (_) {
+        for (String symbol in SymbolSelect.keys) {
+          if (SymbolSelect[symbol]) {
+            GetCandle(symbol, interval.value).then(
+              (value) {
+                GetRecentTrend(symbol);
+              },
+            );
+          }
+        }
+      },
+    );
   }
 
   Future<void> GetSymbol() async {
@@ -46,8 +62,14 @@ class BinanceApiController extends GetxController {
   }
 
   SelectSymbol(String symbol) async {
-    if (symbol != '') SymbolSelect[symbol] = !SymbolSelect[symbol];
-    RatioString.value = '';
+    if (symbol != '') {
+      SymbolSelect[symbol] = !SymbolSelect[symbol];
+    }
+
+    if (SymbolSelect[symbol] != null && !SymbolSelect[symbol]) {
+      SymbolChangeRatio.remove(symbol);
+    }
+
     for (String symbol2 in SymbolSelect.keys) {
       if (SymbolSelect[symbol2]) {
         GetCandle(symbol2, interval.value).then(
@@ -96,6 +118,5 @@ class BinanceApiController extends GetxController {
         double.parse(candle[candle.length - 2].Close) *
         100;
     SymbolChangeRatio[symbol] = ChangeRatio;
-    RatioString.value += symbol + " : " + ChangeRatio.toStringAsFixed(2) + '\n';
   }
 }

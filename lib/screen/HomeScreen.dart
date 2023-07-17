@@ -1,15 +1,13 @@
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
+
 import 'package:test/Data/Chart.dart';
 import 'package:test/Data/DataList.dart';
+import 'package:test/controller/BinanceApiController.dart';
 import 'package:test/controller/KellyBet.dart';
-import 'package:test/controller/binanceApiController.dart';
-
-import '../controller/SimpleController.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -259,7 +257,8 @@ class HomeScreen extends StatelessWidget {
                                                       .SymbolList[index]!);
                                             },
                                             child: Container(
-                                              margin: EdgeInsets.all(5),
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 15, vertical: 8),
                                               padding: EdgeInsets.all(5),
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
@@ -332,9 +331,6 @@ class HomeScreen extends StatelessWidget {
                               onTap: () {
                                 Get.find<BinanceApiController>()
                                     .SelectInterval(IntervalTime.values[index]);
-                                print(Get.find<BinanceApiController>()
-                                    .interval
-                                    .value);
                               },
                               child: Container(
                                 margin: EdgeInsets.symmetric(
@@ -386,7 +382,6 @@ class HomeScreen extends StatelessWidget {
                     GestureDetector(
                       onTap: () async {},
                       child: Container(
-                        alignment: Alignment.center,
                         height: 300,
                         width: size.width * 0.9,
                         decoration: BoxDecoration(
@@ -400,34 +395,88 @@ class HomeScreen extends StatelessWidget {
                           ],
                           color: surfaceContainer,
                         ),
-                        child: Text(
-                          Get.find<BinanceApiController>().RatioString.value,
-                          style: TextStyle(
-                            fontSize: 12,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15, top: 15),
+                          child: ListView.builder(
+                            itemCount: Get.find<BinanceApiController>()
+                                .SymbolChangeRatio
+                                .length,
+                            itemBuilder: (context, index) {
+                              return Obx(
+                                () {
+                                  return RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                            text:
+                                                Get.find<BinanceApiController>()
+                                                    .SymbolChangeRatio
+                                                    .keys
+                                                    .toList()[index]),
+                                        TextSpan(
+                                          text: " : ",
+                                        ),
+                                        TextSpan(
+                                          text: Get.find<BinanceApiController>()
+                                              .SymbolChangeRatio
+                                              .values
+                                              .toList()[index]
+                                              .toStringAsFixed(2),
+                                          style: TextStyle(
+                                            color:
+                                                Get.find<BinanceApiController>()
+                                                            .SymbolChangeRatio
+                                                            .values
+                                                            .toList()[index] >
+                                                        0
+                                                    ? Colors.green
+                                                    : Colors.red,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: "% Volume : " +
+                                              Get.find<BinanceApiController>()
+                                                  .SymbolCandle[Get.find<
+                                                          BinanceApiController>()
+                                                      .SymbolChangeRatio
+                                                      .keys
+                                                      .toList()[index]]
+                                                  .last
+                                                  .Volume,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
                           ),
                         ),
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 40),
-                      height: 300,
-                      width: size.width * 0.9,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Theme.of(context).colorScheme.shadow,
-                            offset: Offset(10, 10),
-                            blurRadius: 10,
-                          ),
-                        ],
-                        color: surfaceContainer,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: LineChart(
-                            mainChart(context),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 40),
+                        height: 300,
+                        width: size.width * 0.9,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Theme.of(context).colorScheme.shadow,
+                              offset: Offset(10, 10),
+                              blurRadius: 10,
+                            ),
+                          ],
+                          color: surfaceContainer,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: LineChart(
+                              mainChart(context),
+                            ),
                           ),
                         ),
                       ),
