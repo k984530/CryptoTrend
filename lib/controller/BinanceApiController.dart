@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:test/binanceObject/BinanceCandle.dart';
 import 'package:test/binanceObject/SymbolInfo.dart';
 
-import '../Data/DataList.dart';
+import '../data/DataList.dart';
 
 class BinanceApiController extends GetxController {
   final String baseURL = 'https://fapi.binance.com';
@@ -112,11 +112,21 @@ class BinanceApiController extends GetxController {
   }
 
   GetRecentTrend(String symbol) {
-    final candle = SymbolCandle[symbol] as List<BinanceCandle>;
-    double ChangeRatio = (double.parse(candle.last.Close) -
-            double.parse(candle[candle.length - 2].Close)) /
-        double.parse(candle[candle.length - 2].Close) *
-        100;
-    SymbolChangeRatio[symbol] = ChangeRatio;
+    final candleList = SymbolCandle[symbol] as List<BinanceCandle>;
+
+    // ChangeRatio를 계산하려면 적어도 2개 이상의 캔들 데이터가 필요합니다.
+    // 따라서 첫 번째 캔들 데이터는 무시하고, 두 번째부터 시작합니다.
+    // 이렇게 하면 각 캔들 데이터에 대한 이전 캔들 데이터에 접근할 수 있습니다.
+    List<double> changeRatioList = candleList.skip(1).map((candle) {
+      int index = candleList.indexOf(candle);
+      double previousClose = double.parse(candleList[index - 1].Close);
+      double currentClose = double.parse(candle.Close);
+      double changeRatio = (currentClose - previousClose) / previousClose * 100;
+
+      // 각 캔들에 대한 ChangeRatio를 리스트에 추가합니다.
+      return changeRatio;
+    }).toList();
+
+    SymbolChangeRatio[symbol] = changeRatioList;
   }
 }

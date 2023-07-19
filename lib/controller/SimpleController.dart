@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:test/Data/Servertime.dart';
+import 'package:test/data/Servertime.dart';
 
 class SimpleController extends GetxController {
   int counter = 0;

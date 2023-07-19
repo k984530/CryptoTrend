@@ -1,11 +1,12 @@
 import 'package:fl_chart/fl_chart.dart';
-
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-import 'package:test/Data/Chart.dart';
-import 'package:test/Data/DataList.dart';
+import 'package:test/data/Chart.dart';
+import 'package:test/data/DataList.dart';
+import 'package:test/binanceObject/BinanceCandle.dart';
 import 'package:test/controller/BinanceApiController.dart';
 import 'package:test/controller/KellyBet.dart';
 
@@ -56,49 +57,94 @@ class HomeScreen extends StatelessWidget {
                                 ],
                                 color: surfaceContainer,
                               ),
-                              child: Expanded(
-                                flex: 1,
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 45,
-                                      child: Center(
-                                        child: Text(
-                                          "Kelly Bet",
-                                          style: TextStyle(
-                                            fontSize: 20,
+                              child: GestureDetector(
+                                onTap: () {
+                                  print('test');
+                                },
+                                child: Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 45,
+                                        child: Center(
+                                          child: Text(
+                                            "Kelly Bet",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Expanded(
-                                          flex: 2,
-                                          child: Text(
-                                            '승리 확률 :',
-                                            textAlign: TextAlign.end,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                              '승리 확률 :',
+                                              textAlign: TextAlign.end,
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: SizedBox(
-                                            width: 50,
+                                          Expanded(
+                                            flex: 1,
+                                            child: SizedBox(
+                                              width: 50,
+                                              child: TextField(
+                                                textAlign: TextAlign.center,
+                                                onChanged: (text) {
+                                                  Get.find<KellyBet>()
+                                                          .winRate
+                                                          .value =
+                                                      double.parse(text) / 100;
+                                                  Get.find<KellyBet>()
+                                                          .lossRate
+                                                          .value =
+                                                      1 -
+                                                          double.parse(text) /
+                                                              100;
+                                                  Get.find<KellyBet>()
+                                                      .calculate();
+                                                },
+                                                decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                  isDense: true,
+                                                ),
+                                                keyboardType:
+                                                    TextInputType.number,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              "%",
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                              '수익률 :',
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
                                             child: TextField(
                                               textAlign: TextAlign.center,
                                               onChanged: (text) {
                                                 Get.find<KellyBet>()
-                                                        .winRate
+                                                        .profit
                                                         .value =
                                                     double.parse(text) / 100;
-                                                Get.find<KellyBet>()
-                                                        .lossRate
-                                                        .value =
-                                                    1 -
-                                                        double.parse(text) /
-                                                            100;
+
                                                 Get.find<KellyBet>()
                                                     .calculate();
                                               },
@@ -110,114 +156,82 @@ class HomeScreen extends StatelessWidget {
                                                   TextInputType.number,
                                             ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            "%",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Expanded(
-                                          flex: 2,
-                                          child: Text(
-                                            '수익률 :',
-                                            textAlign: TextAlign.end,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: TextField(
-                                            textAlign: TextAlign.center,
-                                            onChanged: (text) {
-                                              Get.find<KellyBet>()
-                                                      .profit
-                                                      .value =
-                                                  double.parse(text) / 100;
-
-                                              Get.find<KellyBet>().calculate();
-                                            },
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              isDense: true,
+                                          Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              "%",
                                             ),
-                                            keyboardType: TextInputType.number,
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            "%",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Expanded(
-                                          flex: 2,
-                                          child: Text(
-                                            '손실률 :',
-                                            textAlign: TextAlign.end,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: TextField(
-                                            textAlign: TextAlign.center,
-                                            onChanged: (text) {
-                                              Get.find<KellyBet>().loss.value =
-                                                  double.parse(text) / 100;
-                                              Get.find<KellyBet>().calculate();
-                                            },
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              isDense: true,
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                              '손실률 :',
+                                              textAlign: TextAlign.end,
                                             ),
-                                            keyboardType: TextInputType.number,
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            "%",
+                                          Expanded(
+                                            flex: 1,
+                                            child: TextField(
+                                              textAlign: TextAlign.center,
+                                              onChanged: (text) {
+                                                Get.find<KellyBet>()
+                                                        .loss
+                                                        .value =
+                                                    double.parse(text) / 100;
+                                                Get.find<KellyBet>()
+                                                    .calculate();
+                                              },
+                                              decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                isDense: true,
+                                              ),
+                                              keyboardType:
+                                                  TextInputType.number,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      child: Text(
-                                        '최적의 비율 ' +
-                                            (Get.find<KellyBet>().result.value *
-                                                    100)
-                                                .toStringAsFixed(2) +
-                                            " % ",
-                                        style: TextStyle(
-                                          fontSize: 15,
+                                          Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              "%",
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          '최적의 비율 ' +
+                                              (Get.find<KellyBet>()
+                                                          .result
+                                                          .value *
+                                                      100)
+                                                  .toStringAsFixed(2) +
+                                              " % ",
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Container(
-                                      child: Text(
-                                        '100번 : ' +
-                                            (Get.find<KellyBet>()
-                                                    .expectResult
-                                                    .value)
-                                                .toStringAsFixed(2) +
-                                            " x",
-                                        style: TextStyle(
-                                          fontSize: 15,
+                                      Container(
+                                        child: Text(
+                                          '100번 : ' +
+                                              (Get.find<KellyBet>()
+                                                      .expectResult
+                                                      .value)
+                                                  .toStringAsFixed(2) +
+                                              " x",
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -421,13 +435,15 @@ class HomeScreen extends StatelessWidget {
                                               .SymbolChangeRatio
                                               .values
                                               .toList()[index]
+                                              .last
                                               .toStringAsFixed(2),
                                           style: TextStyle(
                                             color:
                                                 Get.find<BinanceApiController>()
                                                             .SymbolChangeRatio
                                                             .values
-                                                            .toList()[index] >
+                                                            .toList()[index]
+                                                            .last >
                                                         0
                                                     ? Colors.green
                                                     : Colors.red,
@@ -435,6 +451,13 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                         TextSpan(
                                           text: "% Volume : " +
+                                              // Get.find<BinanceApiController>()
+                                              //     .SymbolCandle[Get.find<
+                                              //             BinanceApiController>()
+                                              //         .SymbolChangeRatio
+                                              //         .keys
+                                              //         .toList()[index]]
+                                              //     .Volume,
                                               Get.find<BinanceApiController>()
                                                   .SymbolCandle[Get.find<
                                                           BinanceApiController>()
@@ -454,33 +477,35 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 40),
-                        height: 300,
-                        width: size.width * 0.9,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Theme.of(context).colorScheme.shadow,
-                              offset: Offset(10, 10),
-                              blurRadius: 10,
-                            ),
-                          ],
-                          color: surfaceContainer,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                    for (String symbol in Get.find<BinanceApiController>()
+                        .SymbolChangeRatio
+                        .keys
+                        .toList())
+                      GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          height: 200,
+                          width: size.width * 0.9,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Theme.of(context).colorScheme.shadow,
+                                offset: Offset(10, 10),
+                                blurRadius: 10,
+                              ),
+                            ],
+                            color: surfaceContainer,
+                          ),
                           child: Center(
-                            child: LineChart(
-                              mainChart(context),
+                            child: Chart(
+                              context,
+                              symbol,
                             ),
                           ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),
