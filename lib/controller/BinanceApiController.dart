@@ -88,7 +88,7 @@ class BinanceApiController extends GetxController {
         symbol +
         "&interval=" +
         interval.time +
-        "&limit=99");
+        "&limit=20");
     List<BinanceCandle> CandleList = [];
     await http.get(request).then((value) {
       for (List l1 in jsonDecode(value.body)) {

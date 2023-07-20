@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:test/Palate.dart';
 
 import 'package:test/data/Chart.dart';
 import 'package:test/data/DataList.dart';
@@ -18,11 +19,6 @@ class HomeScreen extends StatelessWidget {
     Get.put(KellyBet());
     Get.put(BinanceApiController());
     final Size size = MediaQuery.of(context).size;
-    final surfaceContainer = Color.fromARGB(
-        Theme.of(context).colorScheme.surface.alpha,
-        Theme.of(context).colorScheme.surface.red * 2,
-        Theme.of(context).colorScheme.surface.green * 2,
-        Theme.of(context).colorScheme.surface.blue * 2);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
@@ -55,7 +51,7 @@ class HomeScreen extends StatelessWidget {
                                     blurRadius: 10,
                                   ),
                                 ],
-                                color: surfaceContainer,
+                                color: Palate(context).surfaceContainer,
                               ),
                               child: GestureDetector(
                                 onTap: () {
@@ -249,7 +245,7 @@ class HomeScreen extends StatelessWidget {
                                     blurRadius: 10,
                                   ),
                                 ],
-                                color: surfaceContainer,
+                                color: Palate(context).surfaceContainer,
                               ),
                               child: Column(
                                 children: [
@@ -371,7 +367,7 @@ class HomeScreen extends StatelessWidget {
                                       ? Theme.of(context)
                                           .colorScheme
                                           .primaryContainer
-                                      : surfaceContainer,
+                                      : Palate(context).surfaceContainer,
                                 ),
                                 child: Text(
                                   IntervalTime.values[index].time,
@@ -398,6 +394,7 @@ class HomeScreen extends StatelessWidget {
                       child: Container(
                         height: 300,
                         width: size.width * 0.9,
+                        margin: EdgeInsets.only(bottom: 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           boxShadow: [
@@ -407,10 +404,13 @@ class HomeScreen extends StatelessWidget {
                               blurRadius: 10,
                             ),
                           ],
-                          color: surfaceContainer,
+                          color: Palate(context).surfaceContainer,
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 15, top: 15),
+                          padding: const EdgeInsets.only(
+                            left: 15,
+                            top: 15,
+                          ),
                           child: ListView.builder(
                             itemCount: Get.find<BinanceApiController>()
                                 .SymbolChangeRatio
@@ -496,7 +496,7 @@ class HomeScreen extends StatelessWidget {
                                 blurRadius: 10,
                               ),
                             ],
-                            color: surfaceContainer,
+                            color: Palate(context).surfaceContainer,
                           ),
                           child: Center(
                             child: Chart(
