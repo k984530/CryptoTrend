@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/binanceObject/BinanceCandle.dart';
 import 'package:test/binanceObject/SymbolInfo.dart';
 
@@ -20,25 +21,31 @@ class BinanceApiController extends GetxController {
   RxMap SymbolSelect = {}.obs;
   RxMap SymbolCandle = {}.obs;
   RxMap SymbolChangeRatio = {}.obs;
-
   @override
-  onInit() {
+  onInit() async {
     super.onInit();
-    GetSymbol();
-    Timer.periodic(
-      Duration(seconds: 5),
-      (_) {
-        for (String symbol in SymbolSelect.keys) {
-          if (SymbolSelect[symbol]) {
-            GetCandle(symbol, interval.value).then(
-              (value) {
-                GetRecentTrend(symbol);
-              },
-            );
+    SharedPreferences.getInstance().then((value) {
+      try {
+        print(jsonDecode(value.getString('SymbolSelect') ?? ''));
+        SymbolSelect.value = jsonDecode(value.getString('SymbolSelect') ?? '');
+        interval.value = returnTime(value.getString('Interval') ?? "5m");
+      } catch (e) {}
+      GetSymbol();
+      Timer.periodic(
+        Duration(seconds: 5),
+        (_) {
+          for (String symbol in SymbolSelect.keys) {
+            if (SymbolSelect[symbol]) {
+              GetCandle(symbol, interval.value).then(
+                (value) {
+                  GetRecentTrend(symbol);
+                },
+              );
+            }
           }
-        }
-      },
-    );
+        },
+      );
+    });
   }
 
   Future<void> GetSymbol() async {
@@ -47,7 +54,7 @@ class BinanceApiController extends GetxController {
       SymbolInfo Info = SymbolInfo.fromJson(value.body);
       SymbolList.value = Info.symbols.map((e) {
         if (e.symbol.contains("USDT")) {
-          SymbolSelect[e.symbol] = false;
+          SymbolSelect[e.symbol] = SymbolSelect[e.symbol] ?? false;
           return e.symbol;
         }
       }).toList();
@@ -59,6 +66,11 @@ class BinanceApiController extends GetxController {
   SelectInterval(IntervalTime t) async {
     interval.value = t;
     await SelectSymbol('');
+    SharedPreferences.getInstance().then(
+      (value) {
+        value.setString('Interval', t.time);
+      },
+    );
   }
 
   SelectSymbol(String symbol) async {
@@ -79,6 +91,11 @@ class BinanceApiController extends GetxController {
         );
       }
     }
+    SharedPreferences.getInstance().then(
+      (value) {
+        value.setString('SymbolSelect', jsonEncode(SymbolSelect.value));
+      },
+    );
   }
 
   Future<void> GetCandle(String symbol, IntervalTime interval) async {

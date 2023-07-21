@@ -17,7 +17,10 @@ Widget Chart(BuildContext context, String symbol) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(symbol),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(symbol),
+      ),
       Expanded(
         child: Container(
           margin: EdgeInsets.only(
@@ -29,7 +32,7 @@ Widget Chart(BuildContext context, String symbol) {
                 horizontalLines: [
                   HorizontalLine(
                     y: 0,
-                    color: Colors.white,
+                    color: Colors.white60,
                     strokeWidth: 2,
                   ),
                 ],
@@ -38,8 +41,10 @@ Widget Chart(BuildContext context, String symbol) {
                 show: true,
                 drawVerticalLine: false,
                 drawHorizontalLine: true,
-                horizontalInterval:
-                    candleChangeList.reduce(max) / 3, // 수평 라인 간격 설정
+                horizontalInterval: (candleChangeList.reduce(max)).abs() >
+                        (candleChangeList.reduce(min)).abs()
+                    ? candleChangeList.reduce(max) / 3
+                    : (candleChangeList.reduce(min)).abs() / 3, // 수평 라인 간격 설정
                 verticalInterval: 10.0, // 수직 라인 간격 설정
                 getDrawingHorizontalLine: (value) {
                   return FlLine(
@@ -66,7 +71,10 @@ Widget Chart(BuildContext context, String symbol) {
                   sideTitles: SideTitles(
                     showTitles: true,
                     reservedSize: 55,
-                    interval: candleChangeList.reduce(max) / 2,
+                    interval: (candleChangeList.reduce(max)).abs() >
+                            (candleChangeList.reduce(min)).abs()
+                        ? candleChangeList.reduce(max) / 3
+                        : (candleChangeList.reduce(min)).abs() / 3,
                     getTitlesWidget: (value, meta) {
                       if (value == candleChangeList.reduce(min) * 1.3 ||
                           value == candleChangeList.reduce(max) * 1.3) {
@@ -124,7 +132,7 @@ Widget Chart(BuildContext context, String symbol) {
                         index.toDouble(), (value * 1000).floor() / 1000);
                   }).toList(),
                   isCurved: true, // 곡선 라인 여부
-                  color: Colors.blue, // 라인 색상 설정
+                  color: Theme.of(context).colorScheme.primary, // 라인 색상 설정
                   barWidth: 2.0, // 라인 두께 설정
                   isStrokeCapRound: true,
                   dotData: FlDotData(
