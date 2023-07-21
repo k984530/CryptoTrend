@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:test/data/DataList.dart';
 
 import '../binanceObject/BinanceCandle.dart';
 import '../controller/BinanceApiController.dart';
@@ -13,6 +15,7 @@ Widget Chart(BuildContext context, String symbol) {
       .SymbolCandle[symbol] as List<BinanceCandle>;
   List<double> candleChangeList =
       Get.find<BinanceApiController>().SymbolChangeRatio[symbol];
+  IntervalTime time = Get.find<BinanceApiController>().interval.value;
 
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,13 +42,13 @@ Widget Chart(BuildContext context, String symbol) {
               ),
               gridData: FlGridData(
                 show: true,
-                drawVerticalLine: false,
+                drawVerticalLine: true,
                 drawHorizontalLine: true,
                 horizontalInterval: (candleChangeList.reduce(max)).abs() >
                         (candleChangeList.reduce(min)).abs()
                     ? candleChangeList.reduce(max) / 3
                     : (candleChangeList.reduce(min)).abs() / 3, // 수평 라인 간격 설정
-                verticalInterval: 10.0, // 수직 라인 간격 설정
+                verticalInterval: 5.0, // 수직 라인 간격 설정
                 getDrawingHorizontalLine: (value) {
                   return FlLine(
                     color: Colors.grey,
@@ -65,6 +68,137 @@ Widget Chart(BuildContext context, String symbol) {
                   sideTitles: SideTitles(
                     showTitles: true,
                     reservedSize: 25,
+                    interval: 10,
+                    getTitlesWidget: (value, meta) {
+                      String t = '';
+                      if (time == IntervalTime.m1) {
+                        t = DateFormat('HH:mm').format(
+                          DateTime.now().add(
+                            Duration(
+                              minutes: (value.floor() - 19),
+                            ),
+                          ),
+                        );
+                      } else if (time == IntervalTime.m3) {
+                        t = DateFormat('HH:mm').format(
+                          DateTime.now().add(
+                            Duration(
+                              minutes: 3 * (value.floor() - 19),
+                            ),
+                          ),
+                        );
+                      } else if (time == IntervalTime.m5) {
+                        t = DateFormat('HH:mm').format(
+                          DateTime.now().add(
+                            Duration(
+                              minutes: 5 * (value.floor() - 19),
+                            ),
+                          ),
+                        );
+                      } else if (time == IntervalTime.m15) {
+                        t = DateFormat('HH:mm').format(
+                          DateTime.now().add(
+                            Duration(
+                              minutes: 15 * (value.floor() - 19),
+                            ),
+                          ),
+                        );
+                      } else if (time == IntervalTime.m30) {
+                        t = DateFormat('HH:mm').format(
+                          DateTime.now().add(
+                            Duration(
+                              minutes: 30 * (value.floor() - 19),
+                            ),
+                          ),
+                        );
+                      } else if (time == IntervalTime.h1) {
+                        t = DateFormat("dd'D' H'h'").format(
+                          DateTime.now().add(
+                            Duration(
+                              hours: (value.floor() - 19),
+                            ),
+                          ),
+                        );
+                      } else if (time == IntervalTime.h2) {
+                        t = DateFormat("dd'D' H'h'").format(
+                          DateTime.now().add(
+                            Duration(
+                              hours: 2 * (value.floor() - 19),
+                            ),
+                          ),
+                        );
+                      } else if (time == IntervalTime.h4) {
+                        t = DateFormat("dd'D' H'h'").format(
+                          DateTime.now().add(
+                            Duration(
+                              hours: 4 * (value.floor() - 19),
+                            ),
+                          ),
+                        );
+                      } else if (time == IntervalTime.h6) {
+                        t = DateFormat("dd'D' H'h'").format(
+                          DateTime.now().add(
+                            Duration(
+                              hours: 6 * (value.floor() - 19),
+                            ),
+                          ),
+                        );
+                      } else if (time == IntervalTime.h8) {
+                        t = DateFormat("dd'D' H'h'").format(
+                          DateTime.now().add(
+                            Duration(
+                              hours: 8 * (value.floor() - 19),
+                            ),
+                          ),
+                        );
+                      } else if (time == IntervalTime.h12) {
+                        t = DateFormat("dd'D' H'h'").format(
+                          DateTime.now().add(
+                            Duration(
+                              hours: 12 * (value.floor() - 19),
+                            ),
+                          ),
+                        );
+                      } else if (time == IntervalTime.d1) {
+                        t = DateFormat('MM.dd').format(
+                          DateTime.now().add(
+                            Duration(
+                              days: (value.floor() - 19),
+                            ),
+                          ),
+                        );
+                      } else if (time == IntervalTime.d3) {
+                        t = DateFormat('MM.dd').format(
+                          DateTime.now().add(
+                            Duration(
+                              days: 3 * (value.floor() - 19),
+                            ),
+                          ),
+                        );
+                      } else if (time == IntervalTime.w1) {
+                        t = DateFormat('MM.dd').format(
+                          DateTime.now().add(
+                            Duration(
+                              days: 7 * (value.floor() - 19),
+                            ),
+                          ),
+                        );
+                      } else if (time == IntervalTime.M1) {
+                        t = DateFormat('yyyy.MM').format(
+                          DateTime.now().add(
+                            Duration(
+                              days: 30 * (value.floor() - 19),
+                            ),
+                          ),
+                        );
+                      }
+                      return SideTitleWidget(
+                          child: Text(
+                            t,
+                          ),
+                          space: 5,
+                          axisSide: meta.axisSide);
+                    },
                   ),
                 ),
                 leftTitles: AxisTitles(
