@@ -27,7 +27,7 @@ Widget Chart(BuildContext context, String symbol) {
       Expanded(
         child: Container(
           margin: EdgeInsets.only(
-            right: 15,
+            right: 35,
           ),
           child: LineChart(
             LineChartData(
