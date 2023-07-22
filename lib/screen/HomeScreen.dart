@@ -451,21 +451,25 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                         TextSpan(
                                           text: "% Volume : " +
-                                              // Get.find<BinanceApiController>()
-                                              //     .SymbolCandle[Get.find<
-                                              //             BinanceApiController>()
-                                              //         .SymbolChangeRatio
-                                              //         .keys
-                                              //         .toList()[index]]
-                                              //     .Volume,
-                                              Get.find<BinanceApiController>()
-                                                  .SymbolCandle[Get.find<
-                                                          BinanceApiController>()
-                                                      .SymbolChangeRatio
-                                                      .keys
-                                                      .toList()[index]]
-                                                  .last
-                                                  .Volume,
+                                              (double.parse(Get.find<
+                                                              BinanceApiController>()
+                                                          .SymbolCandle[Get.find<
+                                                                  BinanceApiController>()
+                                                              .SymbolChangeRatio
+                                                              .keys
+                                                              .toList()[index]]
+                                                          .last
+                                                          .Volume) *
+                                                      double.parse(Get.find<
+                                                              BinanceApiController>()
+                                                          .SymbolCandle[Get.find<
+                                                                  BinanceApiController>()
+                                                              .SymbolChangeRatio
+                                                              .keys
+                                                              .toList()[index]]
+                                                          .last
+                                                          .Close))
+                                                  .toStringAsFixed(0),
                                         ),
                                       ],
                                     ),
