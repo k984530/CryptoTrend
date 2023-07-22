@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/binanceObject/BinanceCandle.dart';
@@ -15,6 +13,7 @@ class BinanceApiController extends GetxController {
   final String baseURL = 'https://fapi.binance.com';
   final String DataURL = '/fapi/v1/exchangeInfo';
   final String CandleURL = "/fapi/v1/klines";
+  int point = 2400;
   RxMap SymbolRatio = {}.obs;
   Rx<IntervalTime> interval = IntervalTime.m5.obs;
   RxList SymbolList = [].obs;
@@ -26,7 +25,6 @@ class BinanceApiController extends GetxController {
     super.onInit();
     SharedPreferences.getInstance().then((value) {
       try {
-        print(jsonDecode(value.getString('SymbolSelect') ?? ''));
         SymbolSelect.value = jsonDecode(value.getString('SymbolSelect') ?? '');
         interval.value = returnTime(value.getString('Interval') ?? "5m");
       } catch (e) {}
@@ -45,22 +43,33 @@ class BinanceApiController extends GetxController {
           }
         },
       );
+      Timer.periodic(
+        Duration(minutes: 1),
+        (_) {
+          point = 2300;
+        },
+      );
     });
   }
 
   Future<void> GetSymbol() async {
     final request = Uri.parse(baseURL + DataURL);
-    await http.get(request).then((value) {
-      SymbolInfo Info = SymbolInfo.fromJson(value.body);
-      SymbolList.value = Info.symbols.map((e) {
-        if (e.symbol.contains("USDT")) {
-          SymbolSelect[e.symbol] = SymbolSelect[e.symbol] ?? false;
-          return e.symbol;
-        }
-      }).toList();
-      SymbolList.removeWhere((element) => element == null);
-      return SymbolList;
-    });
+    if (point > 0) {
+      point -= 1;
+      await http.get(request).then(
+        (value) {
+          SymbolInfo Info = SymbolInfo.fromJson(value.body);
+          SymbolList.value = Info.symbols.map((e) {
+            if (e.symbol.contains("USDT")) {
+              SymbolSelect[e.symbol] = SymbolSelect[e.symbol] ?? false;
+              return e.symbol;
+            }
+          }).toList();
+          SymbolList.removeWhere((element) => element == null);
+          return SymbolList;
+        },
+      );
+    }
   }
 
   SelectInterval(IntervalTime t) async {
@@ -93,7 +102,7 @@ class BinanceApiController extends GetxController {
     }
     SharedPreferences.getInstance().then(
       (value) {
-        value.setString('SymbolSelect', jsonEncode(SymbolSelect.value));
+        value.setString('SymbolSelect', jsonEncode(SymbolSelect));
       },
     );
   }
@@ -106,26 +115,31 @@ class BinanceApiController extends GetxController {
         "&interval=" +
         interval.time +
         "&limit=20");
-    List<BinanceCandle> CandleList = [];
-    await http.get(request).then((value) {
-      for (List l1 in jsonDecode(value.body)) {
-        final candle = BinanceCandle(
-            OpenTime: l1[0],
-            Open: l1[1],
-            High: l1[2],
-            Low: l1[3],
-            Close: l1[4],
-            Volume: l1[5],
-            CloseTime: l1[6],
-            QuoteAssetVolume: l1[7],
-            NumberOfTrades: l1[8],
-            TakerBuyBaseAssetVolume: l1[9],
-            TakerBuyQuoteAssetVolume: l1[10],
-            Ignore: l1[11]);
-        CandleList.add(candle);
-      }
-      SymbolCandle[symbol] = CandleList;
-    });
+    if (point > 0) {
+      point -= 1;
+      List<BinanceCandle> CandleList = [];
+      await http.get(request).then(
+        (value) {
+          for (List l1 in jsonDecode(value.body)) {
+            final candle = BinanceCandle(
+                OpenTime: l1[0],
+                Open: l1[1],
+                High: l1[2],
+                Low: l1[3],
+                Close: l1[4],
+                Volume: l1[5],
+                CloseTime: l1[6],
+                QuoteAssetVolume: l1[7],
+                NumberOfTrades: l1[8],
+                TakerBuyBaseAssetVolume: l1[9],
+                TakerBuyQuoteAssetVolume: l1[10],
+                Ignore: l1[11]);
+            CandleList.add(candle);
+          }
+          SymbolCandle[symbol] = CandleList;
+        },
+      );
+    }
   }
 
   GetRecentTrend(String symbol) {

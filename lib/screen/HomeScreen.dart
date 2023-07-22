@@ -54,9 +54,7 @@ class HomeScreen extends StatelessWidget {
                                 color: Palate(context).surfaceContainer,
                               ),
                               child: GestureDetector(
-                                onTap: () {
-                                  print('test');
-                                },
+                                onTap: () {},
                                 child: Expanded(
                                   flex: 1,
                                   child: Column(
@@ -88,17 +86,25 @@ class HomeScreen extends StatelessWidget {
                                             child: SizedBox(
                                               width: 50,
                                               child: TextField(
+                                                controller: Get.find<KellyBet>()
+                                                    .winRateCtr,
                                                 textAlign: TextAlign.center,
                                                 onChanged: (text) {
                                                   Get.find<KellyBet>()
-                                                          .winRate
-                                                          .value =
-                                                      double.parse(text) / 100;
+                                                      .winRate
+                                                      .value = double.parse(
+                                                          Get.find<KellyBet>()
+                                                              .winRateCtr
+                                                              .text) /
+                                                      100;
                                                   Get.find<KellyBet>()
                                                           .lossRate
                                                           .value =
                                                       1 -
-                                                          double.parse(text) /
+                                                          double.parse(Get.find<
+                                                                      KellyBet>()
+                                                                  .winRateCtr
+                                                                  .text) /
                                                               100;
                                                   Get.find<KellyBet>()
                                                       .calculate();
@@ -134,12 +140,17 @@ class HomeScreen extends StatelessWidget {
                                           Expanded(
                                             flex: 1,
                                             child: TextField(
+                                              controller: Get.find<KellyBet>()
+                                                  .profitCtr,
                                               textAlign: TextAlign.center,
                                               onChanged: (text) {
                                                 Get.find<KellyBet>()
-                                                        .profit
-                                                        .value =
-                                                    double.parse(text) / 100;
+                                                    .profit
+                                                    .value = double.parse(
+                                                        Get.find<KellyBet>()
+                                                            .profitCtr
+                                                            .text) /
+                                                    100;
 
                                                 Get.find<KellyBet>()
                                                     .calculate();
@@ -174,12 +185,17 @@ class HomeScreen extends StatelessWidget {
                                           Expanded(
                                             flex: 1,
                                             child: TextField(
+                                              controller:
+                                                  Get.find<KellyBet>().lossCtr,
                                               textAlign: TextAlign.center,
                                               onChanged: (text) {
                                                 Get.find<KellyBet>()
-                                                        .loss
-                                                        .value =
-                                                    double.parse(text) / 100;
+                                                    .loss
+                                                    .value = double.parse(
+                                                        Get.find<KellyBet>()
+                                                            .lossCtr
+                                                            .text) /
+                                                    100;
                                                 Get.find<KellyBet>()
                                                     .calculate();
                                               },
@@ -451,25 +467,21 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                         TextSpan(
                                           text: "% Volume : " +
-                                              (double.parse(Get.find<
-                                                              BinanceApiController>()
-                                                          .SymbolCandle[Get.find<
-                                                                  BinanceApiController>()
-                                                              .SymbolChangeRatio
-                                                              .keys
-                                                              .toList()[index]]
-                                                          .last
-                                                          .Volume) *
-                                                      double.parse(Get.find<
-                                                              BinanceApiController>()
-                                                          .SymbolCandle[Get.find<
-                                                                  BinanceApiController>()
-                                                              .SymbolChangeRatio
-                                                              .keys
-                                                              .toList()[index]]
-                                                          .last
-                                                          .Close))
-                                                  .toStringAsFixed(0),
+                                              // Get.find<BinanceApiController>()
+                                              //     .SymbolCandle[Get.find<
+                                              //             BinanceApiController>()
+                                              //         .SymbolChangeRatio
+                                              //         .keys
+                                              //         .toList()[index]]
+                                              //     .Volume,
+                                              Get.find<BinanceApiController>()
+                                                  .SymbolCandle[Get.find<
+                                                          BinanceApiController>()
+                                                      .SymbolChangeRatio
+                                                      .keys
+                                                      .toList()[index]]
+                                                  .last
+                                                  .Volume,
                                         ),
                                       ],
                                     ),
