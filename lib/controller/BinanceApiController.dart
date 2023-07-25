@@ -30,7 +30,7 @@ class BinanceApiController extends GetxController {
       } catch (e) {}
       GetSymbol();
       Timer.periodic(
-        Duration(seconds: 5),
+        Duration(seconds: 2),
         (_) {
           for (String symbol in SymbolSelect.keys) {
             if (SymbolSelect[symbol]) {
@@ -60,10 +60,8 @@ class BinanceApiController extends GetxController {
         (value) {
           SymbolInfo Info = SymbolInfo.fromJson(value.body);
           SymbolList.value = Info.symbols.map((e) {
-            if (e.symbol.contains("USDT")) {
-              SymbolSelect[e.symbol] = SymbolSelect[e.symbol] ?? false;
-              return e.symbol;
-            }
+            SymbolSelect[e.symbol] = SymbolSelect[e.symbol] ?? false;
+            return e.symbol;
           }).toList();
           SymbolList.removeWhere((element) => element == null);
           return SymbolList;
@@ -83,28 +81,36 @@ class BinanceApiController extends GetxController {
   }
 
   SelectSymbol(String symbol) async {
-    if (symbol != '') {
-      SymbolSelect[symbol] = !SymbolSelect[symbol];
-    }
-
-    if (SymbolSelect[symbol] != null && !SymbolSelect[symbol]) {
+    int count = 0;
+    if (SymbolSelect[symbol] != null && SymbolSelect[symbol]) {
       SymbolChangeRatio.remove(symbol);
     }
-
-    for (String symbol2 in SymbolSelect.keys) {
-      if (SymbolSelect[symbol2]) {
-        GetCandle(symbol2, interval.value).then(
-          (value) {
-            GetRecentTrend(symbol2);
-          },
-        );
+    for (bool v in SymbolSelect.values) {
+      if (v) {
+        count++;
       }
     }
-    SharedPreferences.getInstance().then(
-      (value) {
-        value.setString('SymbolSelect', jsonEncode(SymbolSelect));
-      },
-    );
+    if (symbol != '' && SymbolSelect[symbol]) {
+      SymbolSelect[symbol] = false;
+    } else if (symbol != '' && count < 19 && !SymbolSelect[symbol]) {
+      SymbolSelect[symbol] = true;
+    }
+    if (count < 20) {
+      for (String symbol2 in SymbolSelect.keys) {
+        if (SymbolSelect[symbol2]) {
+          GetCandle(symbol2, interval.value).then(
+            (value) {
+              GetRecentTrend(symbol2);
+            },
+          );
+        }
+      }
+      SharedPreferences.getInstance().then(
+        (value) {
+          value.setString('SymbolSelect', jsonEncode(SymbolSelect));
+        },
+      );
+    }
   }
 
   Future<void> GetCandle(String symbol, IntervalTime interval) async {
@@ -117,6 +123,7 @@ class BinanceApiController extends GetxController {
         "&limit=20");
     if (point > 0) {
       point -= 1;
+      print(point);
       List<BinanceCandle> CandleList = [];
       await http.get(request).then(
         (value) {
