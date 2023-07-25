@@ -123,7 +123,6 @@ class BinanceApiController extends GetxController {
         "&limit=99");
     if (point > 0) {
       point -= 1;
-      print(point);
       List<BinanceCandle> CandleList = [];
       await http.get(request).then(
         (value) {
@@ -152,9 +151,6 @@ class BinanceApiController extends GetxController {
   GetRecentTrend(String symbol) {
     final candleList = SymbolCandle[symbol] as List<BinanceCandle>;
 
-    // ChangeRatio를 계산하려면 적어도 2개 이상의 캔들 데이터가 필요합니다.
-    // 따라서 첫 번째 캔들 데이터는 무시하고, 두 번째부터 시작합니다.
-    // 이렇게 하면 각 캔들 데이터에 대한 이전 캔들 데이터에 접근할 수 있습니다.
     List<double> changeRatioList = candleList.skip(1).map((candle) {
       int index = candleList.indexOf(candle);
       double previousClose = double.parse(candleList[index - 1].Close);

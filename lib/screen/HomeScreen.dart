@@ -27,6 +27,13 @@ class HomeScreen extends StatelessWidget {
         onPressed: () {
           flag = !flag;
         },
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        child: Text(
+          'Change Mode',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.onSecondary, fontSize: 10),
+        ),
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
