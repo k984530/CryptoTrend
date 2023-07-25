@@ -16,7 +16,14 @@ Widget Chart(BuildContext context, String symbol) {
   List<double> candleChangeList =
       Get.find<BinanceApiController>().SymbolChangeRatio[symbol];
   IntervalTime time = Get.find<BinanceApiController>().interval.value;
-
+  candleChangeList = candleChangeList.reversed.toList();
+  candleDataList = candleDataList.reversed.toList();
+  if (candleDataList.length > 20) {
+    candleDataList = candleDataList.getRange(0, 20).toList();
+    candleChangeList = candleChangeList.getRange(0, 20).toList();
+    candleChangeList = candleChangeList.reversed.toList();
+    candleDataList = candleDataList.reversed.toList();
+  }
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -48,7 +55,7 @@ Widget Chart(BuildContext context, String symbol) {
                         (candleChangeList.reduce(min)).abs()
                     ? candleChangeList.reduce(max) / 3
                     : (candleChangeList.reduce(min)).abs() / 3, // 수평 라인 간격 설정
-                verticalInterval: 5.0, // 수직 라인 간격 설정
+                verticalInterval: candleDataList.length / 4, // 수직 라인 간격 설정
                 getDrawingHorizontalLine: (value) {
                   return FlLine(
                     color: Colors.grey,
@@ -68,14 +75,15 @@ Widget Chart(BuildContext context, String symbol) {
                   sideTitles: SideTitles(
                     showTitles: true,
                     reservedSize: 25,
-                    interval: 10,
+                    interval: candleDataList.length / 2,
                     getTitlesWidget: (value, meta) {
                       String t = '';
                       if (time == IntervalTime.m1) {
                         t = DateFormat('HH:mm').format(
                           DateTime.now().add(
                             Duration(
-                              minutes: (value.floor() - 19),
+                              minutes:
+                                  (value.floor() - candleDataList.length - 1),
                             ),
                           ),
                         );
@@ -83,7 +91,8 @@ Widget Chart(BuildContext context, String symbol) {
                         t = DateFormat('HH:mm').format(
                           DateTime.now().add(
                             Duration(
-                              minutes: 3 * (value.floor() - 19),
+                              minutes: 3 *
+                                  (value.floor() - candleDataList.length - 1),
                             ),
                           ),
                         );
@@ -91,7 +100,8 @@ Widget Chart(BuildContext context, String symbol) {
                         t = DateFormat('HH:mm').format(
                           DateTime.now().add(
                             Duration(
-                              minutes: 5 * (value.floor() - 19),
+                              minutes: 5 *
+                                  (value.floor() - candleDataList.length - 1),
                             ),
                           ),
                         );
@@ -99,7 +109,8 @@ Widget Chart(BuildContext context, String symbol) {
                         t = DateFormat('HH:mm').format(
                           DateTime.now().add(
                             Duration(
-                              minutes: 15 * (value.floor() - 19),
+                              minutes: 15 *
+                                  (value.floor() - candleDataList.length - 1),
                             ),
                           ),
                         );
@@ -107,7 +118,8 @@ Widget Chart(BuildContext context, String symbol) {
                         t = DateFormat('HH:mm').format(
                           DateTime.now().add(
                             Duration(
-                              minutes: 30 * (value.floor() - 19),
+                              minutes: 30 *
+                                  (value.floor() - candleDataList.length - 1),
                             ),
                           ),
                         );
@@ -115,7 +127,7 @@ Widget Chart(BuildContext context, String symbol) {
                         t = DateFormat("dd'D' H'h'").format(
                           DateTime.now().add(
                             Duration(
-                              hours: (value.floor() - 19),
+                              hours: (value.floor() - 98),
                             ),
                           ),
                         );
@@ -123,7 +135,8 @@ Widget Chart(BuildContext context, String symbol) {
                         t = DateFormat("dd'D' H'h'").format(
                           DateTime.now().add(
                             Duration(
-                              hours: 2 * (value.floor() - 19),
+                              hours: 2 *
+                                  (value.floor() - candleDataList.length - 1),
                             ),
                           ),
                         );
@@ -131,7 +144,8 @@ Widget Chart(BuildContext context, String symbol) {
                         t = DateFormat("dd'D' H'h'").format(
                           DateTime.now().add(
                             Duration(
-                              hours: 4 * (value.floor() - 19),
+                              hours: 4 *
+                                  (value.floor() - candleDataList.length - 1),
                             ),
                           ),
                         );
@@ -139,7 +153,8 @@ Widget Chart(BuildContext context, String symbol) {
                         t = DateFormat("dd'D' H'h'").format(
                           DateTime.now().add(
                             Duration(
-                              hours: 6 * (value.floor() - 19),
+                              hours: 6 *
+                                  (value.floor() - candleDataList.length - 1),
                             ),
                           ),
                         );
@@ -147,7 +162,8 @@ Widget Chart(BuildContext context, String symbol) {
                         t = DateFormat("dd'D' H'h'").format(
                           DateTime.now().add(
                             Duration(
-                              hours: 8 * (value.floor() - 19),
+                              hours: 8 *
+                                  (value.floor() - candleDataList.length - 1),
                             ),
                           ),
                         );
@@ -155,7 +171,8 @@ Widget Chart(BuildContext context, String symbol) {
                         t = DateFormat("dd'D' H'h'").format(
                           DateTime.now().add(
                             Duration(
-                              hours: 12 * (value.floor() - 19),
+                              hours: 12 *
+                                  (value.floor() - candleDataList.length - 1),
                             ),
                           ),
                         );
@@ -163,7 +180,7 @@ Widget Chart(BuildContext context, String symbol) {
                         t = DateFormat('MM.dd').format(
                           DateTime.now().add(
                             Duration(
-                              days: (value.floor() - 19),
+                              days: (value.floor() - candleDataList.length - 1),
                             ),
                           ),
                         );
@@ -171,7 +188,8 @@ Widget Chart(BuildContext context, String symbol) {
                         t = DateFormat('MM.dd').format(
                           DateTime.now().add(
                             Duration(
-                              days: 3 * (value.floor() - 19),
+                              days: 3 *
+                                  (value.floor() - candleDataList.length - 1),
                             ),
                           ),
                         );
@@ -179,7 +197,8 @@ Widget Chart(BuildContext context, String symbol) {
                         t = DateFormat('MM.dd').format(
                           DateTime.now().add(
                             Duration(
-                              days: 7 * (value.floor() - 19),
+                              days: 7 *
+                                  (value.floor() - candleDataList.length - 1),
                             ),
                           ),
                         );
@@ -187,7 +206,8 @@ Widget Chart(BuildContext context, String symbol) {
                         t = DateFormat('yyyy.MM').format(
                           DateTime.now().add(
                             Duration(
-                              days: 30 * (value.floor() - 19),
+                              days: 30 *
+                                  (value.floor() - candleDataList.length - 1),
                             ),
                           ),
                         );

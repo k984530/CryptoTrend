@@ -120,7 +120,7 @@ class BinanceApiController extends GetxController {
         symbol +
         "&interval=" +
         interval.time +
-        "&limit=20");
+        "&limit=99");
     if (point > 0) {
       point -= 1;
       print(point);

@@ -11,15 +11,23 @@ import 'package:test/binanceObject/BinanceCandle.dart';
 import 'package:test/controller/BinanceApiController.dart';
 import 'package:test/controller/KellyBet.dart';
 
+import '../data/Candles.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    bool flag = true;
     Get.put(KellyBet());
     Get.put(BinanceApiController());
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          flag = !flag;
+        },
+      ),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
         child: GestureDetector(
@@ -467,19 +475,12 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                         TextSpan(
                                           text: "% Volume : " +
-                                              // Get.find<BinanceApiController>()
-                                              //     .SymbolCandle[Get.find<
-                                              //             BinanceApiController>()
-                                              //         .SymbolChangeRatio
-                                              //         .keys
-                                              //         .toList()[index]]
-                                              //     .Volume,
                                               Get.find<BinanceApiController>()
-                                                  .SymbolCandle[Get.find<
+                                                  .SymbolCandle![Get.find<
                                                           BinanceApiController>()
                                                       .SymbolChangeRatio
                                                       .keys
-                                                      .toList()[index]]
+                                                      .toList()[index]]!
                                                   .last
                                                   .Volume,
                                         ),
@@ -499,9 +500,10 @@ class HomeScreen extends StatelessWidget {
                         .toList())
                       GestureDetector(
                         onTap: () {},
-                        child: Container(
+                        child: AnimatedContainer(
+                          duration: Duration(seconds: 1),
                           margin: EdgeInsets.symmetric(vertical: 10),
-                          height: 200,
+                          height: flag ? 200 : 250,
                           width: size.width * 0.9,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
@@ -515,10 +517,15 @@ class HomeScreen extends StatelessWidget {
                             color: Palate(context).surfaceContainer,
                           ),
                           child: Center(
-                            child: Chart(
-                              context,
-                              symbol,
-                            ),
+                            child: flag == true
+                                ? Chart(
+                                    context,
+                                    symbol,
+                                  )
+                                : Candles(
+                                    context,
+                                    symbol,
+                                  ),
                           ),
                         ),
                       ),
