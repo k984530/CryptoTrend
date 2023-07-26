@@ -40,7 +40,16 @@ class KellyBet extends GetxController {
     } else if (winRate.value / loss.value - lossRate.value / profit.value >=
         1) {
       result.value = 1;
-      expectResult.value = 100;
+      expectResult.value = pow(
+                  ((1 - result.value) + (result.value * (1 + profit.value))),
+                  100 * winRate.value)
+              .toDouble() *
+          pow(((1 - result.value) + (result.value * (1 - loss.value))),
+                  100 * lossRate.value)
+              .toDouble();
+      if (expectResult.value > 100) {
+        expectResult.value = 100;
+      }
     } else {
       result.value = winRate.value / loss.value - lossRate.value / profit.value;
       expectResult.value = pow(

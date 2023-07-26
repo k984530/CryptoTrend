@@ -1,4 +1,4 @@
-import 'package:CoinTrend/screen/HomeScreen.dart';
+import 'package:CryptoTrend/screen/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
