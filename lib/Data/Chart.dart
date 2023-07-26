@@ -25,7 +25,7 @@ Widget Chart(BuildContext context, String symbol) {
     candleDataList = candleDataList.reversed.toList();
   }
   return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.center,
     children: [
       Padding(
         padding: const EdgeInsets.all(8.0),

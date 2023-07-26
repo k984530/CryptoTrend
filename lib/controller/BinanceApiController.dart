@@ -63,7 +63,9 @@ class BinanceApiController extends GetxController {
             SymbolSelect[e.symbol] = SymbolSelect[e.symbol] ?? false;
             return e.symbol;
           }).toList();
-          SymbolList.removeWhere((element) => element == null);
+          SymbolList.removeWhere((element) =>
+              element == null || !element.toString().contains('USDT'));
+          SymbolList.sort();
           return SymbolList;
         },
       );

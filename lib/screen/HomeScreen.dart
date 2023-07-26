@@ -28,6 +28,7 @@ class HomeScreen extends StatelessWidget {
           flag = !flag;
         },
         backgroundColor: Theme.of(context).colorScheme.secondary,
+        shape: CircleBorder(),
         child: Text(
           'Change Mode',
           textAlign: TextAlign.center,
@@ -92,7 +93,7 @@ class HomeScreen extends StatelessWidget {
                                           Expanded(
                                             flex: 2,
                                             child: Text(
-                                              '승리 확률 :',
+                                              'Win Rate :',
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -148,7 +149,7 @@ class HomeScreen extends StatelessWidget {
                                           Expanded(
                                             flex: 2,
                                             child: Text(
-                                              '수익률 :',
+                                              'Profit :',
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -193,7 +194,7 @@ class HomeScreen extends StatelessWidget {
                                           Expanded(
                                             flex: 2,
                                             child: Text(
-                                              '손실률 :',
+                                              'Loss :',
                                               textAlign: TextAlign.end,
                                             ),
                                           ),
@@ -232,7 +233,7 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                       Container(
                                         child: Text(
-                                          '최적의 비율 ' +
+                                          'Optimal Rate : ' +
                                               (Get.find<KellyBet>()
                                                           .result
                                                           .value *
@@ -246,7 +247,7 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                       Container(
                                         child: Text(
-                                          '100번 : ' +
+                                          'After 100 trials : ' +
                                               (Get.find<KellyBet>()
                                                       .expectResult
                                                       .value)
@@ -282,58 +283,30 @@ class HomeScreen extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     flex: 3,
-                                    child: ListView.builder(
-                                      itemCount:
-                                          Get.find<BinanceApiController>()
-                                              .SymbolList
-                                              .length, // 항목 개수
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return Obx(
-                                          () => GestureDetector(
-                                            onTap: () {
-                                              Get.find<BinanceApiController>()
-                                                  .SelectSymbol(Get.find<
-                                                          BinanceApiController>()
-                                                      .SymbolList[index]!);
-                                            },
-                                            child: Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  horizontal: 15, vertical: 8),
-                                              padding: EdgeInsets.all(5),
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                color: Get.find<
-                                                            BinanceApiController>()
-                                                        .SymbolSelect[Get.find<
-                                                            BinanceApiController>()
-                                                        .SymbolList[index]!]!
-                                                    ? Theme.of(context)
-                                                        .colorScheme
-                                                        .primaryContainer
-                                                    : Theme.of(context)
-                                                        .colorScheme
-                                                        .tertiaryContainer
-                                                        .withOpacity(0),
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                border: Border.all(
-                                                  color: Get.find<
-                                                              BinanceApiController>()
-                                                          .SymbolSelect[Get.find<
-                                                              BinanceApiController>()
-                                                          .SymbolList[index]!]!
-                                                      ? Colors.black
-                                                          .withOpacity(0)
-                                                      : Theme.of(context)
-                                                          .colorScheme
-                                                          .outline,
-                                                ),
-                                              ),
-                                              child: Text(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 8.0),
+                                      child: ListView.builder(
+                                        itemCount:
+                                            Get.find<BinanceApiController>()
+                                                .SymbolList
+                                                .length, // 항목 개수
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return Obx(
+                                            () => GestureDetector(
+                                              onTap: () {
                                                 Get.find<BinanceApiController>()
-                                                    .SymbolList[index]!,
-                                                style: TextStyle(
+                                                    .SelectSymbol(Get.find<
+                                                            BinanceApiController>()
+                                                        .SymbolList[index]!);
+                                              },
+                                              child: Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 15,
+                                                    vertical: 4),
+                                                padding: EdgeInsets.all(5),
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
                                                   color: Get.find<
                                                               BinanceApiController>()
                                                           .SymbolSelect[Get.find<
@@ -341,16 +314,52 @@ class HomeScreen extends StatelessWidget {
                                                           .SymbolList[index]!]!
                                                       ? Theme.of(context)
                                                           .colorScheme
-                                                          .onPrimaryContainer
+                                                          .primaryContainer
                                                       : Theme.of(context)
                                                           .colorScheme
-                                                          .outline,
+                                                          .tertiaryContainer
+                                                          .withOpacity(0),
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  border: Border.all(
+                                                    color: Get.find<
+                                                                BinanceApiController>()
+                                                            .SymbolSelect[Get.find<
+                                                                    BinanceApiController>()
+                                                                .SymbolList[
+                                                            index]!]!
+                                                        ? Colors.black
+                                                            .withOpacity(0)
+                                                        : Theme.of(context)
+                                                            .colorScheme
+                                                            .outline,
+                                                  ),
                                                 ),
-                                              ), // 각 항목의 텍스트
+                                                child: Text(
+                                                  Get.find<
+                                                          BinanceApiController>()
+                                                      .SymbolList[index]!,
+                                                  style: TextStyle(
+                                                    fontSize: 10,
+                                                    color: Get.find<
+                                                                BinanceApiController>()
+                                                            .SymbolSelect[Get.find<
+                                                                    BinanceApiController>()
+                                                                .SymbolList[
+                                                            index]!]!
+                                                        ? Theme.of(context)
+                                                            .colorScheme
+                                                            .onPrimaryContainer
+                                                        : Theme.of(context)
+                                                            .colorScheme
+                                                            .outline,
+                                                  ),
+                                                ), // 각 항목의 텍스트
+                                              ),
                                             ),
-                                          ),
-                                        );
-                                      },
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -482,14 +491,25 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                         TextSpan(
                                           text: "% Volume : " +
-                                              Get.find<BinanceApiController>()
-                                                  .SymbolCandle![Get.find<
-                                                          BinanceApiController>()
-                                                      .SymbolChangeRatio
-                                                      .keys
-                                                      .toList()[index]]!
-                                                  .last
-                                                  .Volume,
+                                              (double.parse(Get.find<
+                                                              BinanceApiController>()
+                                                          .SymbolCandle![Get.find<
+                                                                  BinanceApiController>()
+                                                              .SymbolChangeRatio
+                                                              .keys
+                                                              .toList()[index]]!
+                                                          .last
+                                                          .Volume) *
+                                                      double.parse(Get.find<
+                                                              BinanceApiController>()
+                                                          .SymbolCandle![Get.find<
+                                                                  BinanceApiController>()
+                                                              .SymbolChangeRatio
+                                                              .keys
+                                                              .toList()[index]]!
+                                                          .last
+                                                          .Close))
+                                                  .toStringAsFixed(0),
                                         ),
                                       ],
                                     ),
