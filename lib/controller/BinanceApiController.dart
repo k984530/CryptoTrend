@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test/binanceObject/BinanceCandle.dart';
-import 'package:test/binanceObject/SymbolInfo.dart';
 
+import '../binanceObject/BinanceCandle.dart';
+import '../binanceObject/SymbolInfo.dart';
 import '../data/DataList.dart';
 
 class BinanceApiController extends GetxController {
@@ -28,7 +28,17 @@ class BinanceApiController extends GetxController {
         SymbolSelect.value = jsonDecode(value.getString('SymbolSelect') ?? '');
         interval.value = returnTime(value.getString('Interval') ?? "5m");
       } catch (e) {}
-      GetSymbol();
+      GetSymbol().then((_) {
+        for (String symbol in SymbolSelect.keys) {
+          if (SymbolSelect[symbol]) {
+            GetCandle(symbol, interval.value).then(
+              (value) {
+                GetRecentTrend(symbol);
+              },
+            );
+          }
+        }
+      });
       Timer.periodic(
         Duration(seconds: 2),
         (_) {
@@ -144,7 +154,15 @@ class BinanceApiController extends GetxController {
                 Ignore: l1[11]);
             CandleList.add(candle);
           }
-          SymbolCandle[symbol] = CandleList;
+
+          if (CandleList.any((element) =>
+              double.parse(element.Volume) > 0.01 ||
+              double.parse(element.Volume) < -0.01)) {
+            SymbolCandle[symbol] = CandleList;
+          } else {
+            SymbolList.remove(symbol);
+            SymbolSelect.remove(symbol);
+          }
         },
       );
     }

@@ -1,6 +1,6 @@
+import 'package:CoinTrend/screen/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test/screen/HomeScreen.dart';
 
 void main() {
   runApp(MyApp());

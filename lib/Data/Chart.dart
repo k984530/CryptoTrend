@@ -4,10 +4,10 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:test/data/DataList.dart';
 
 import '../binanceObject/BinanceCandle.dart';
 import '../controller/BinanceApiController.dart';
+import '../data/DataList.dart';
 
 Widget Chart(BuildContext context, String symbol) {
   // 해당 심볼에 대한 캔들 데이터 가져오기

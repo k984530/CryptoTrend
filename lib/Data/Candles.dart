@@ -1,8 +1,9 @@
 import 'package:candlesticks/candlesticks.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test/binanceObject/BinanceCandle.dart';
-import 'package:test/controller/BinanceApiController.dart';
+
+import '../binanceObject/BinanceCandle.dart';
+import '../controller/BinanceApiController.dart';
 
 Widget Candles(BuildContext buildContext, String symbol) {
   List<Candle> test = [];

@@ -1,17 +1,12 @@
-import 'package:fl_chart/fl_chart.dart';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:test/Palate.dart';
-
-import 'package:test/data/Chart.dart';
-import 'package:test/data/DataList.dart';
-import 'package:test/binanceObject/BinanceCandle.dart';
-import 'package:test/controller/BinanceApiController.dart';
-import 'package:test/controller/KellyBet.dart';
-
+import '../Palate.dart';
+import '../controller/BinanceApiController.dart';
+import '../controller/KellyBet.dart';
 import '../data/Candles.dart';
+import '../data/Chart.dart';
+import '../data/DataList.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
