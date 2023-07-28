@@ -225,7 +225,7 @@ class HomeScreen extends StatelessWidget {
                                             ),
                                           ),
                                         ],
-                                      ),
+                                      ), //testcode
                                       Container(
                                         child: Text(
                                           'Optimal Rate : ' +
