@@ -1,3 +1,4 @@
+import 'package:CryptoTrend/component/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -18,6 +19,12 @@ class HomeScreen extends StatelessWidget {
     Get.put(BinanceApiController());
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent.withOpacity(0),
+        surfaceTintColor: Colors.transparent.withOpacity(0),
+        elevation: 0,
+      ),
+      drawer: MainDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           flag = !flag;
