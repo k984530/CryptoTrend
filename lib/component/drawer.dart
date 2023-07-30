@@ -103,7 +103,7 @@ Users are encouraged to periodically review the Privacy Policy to stay informed 
             },
             leading: Icon(Icons.mobile_friendly),
             title: Text("Privacy Policy"),
-          )
+          ),
         ],
       ),
     );
