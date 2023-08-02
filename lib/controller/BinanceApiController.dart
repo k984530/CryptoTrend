@@ -32,8 +32,9 @@ class BinanceApiController extends GetxController {
         for (String symbol in SymbolSelect.keys) {
           if (SymbolSelect[symbol]) {
             GetCandle(symbol, interval.value).then(
-              (value) {
+              (value) async {
                 GetRecentTrend(symbol);
+                await FindSymbolsWithAmplitude();
               },
             );
           }
@@ -55,11 +56,51 @@ class BinanceApiController extends GetxController {
       );
       Timer.periodic(
         Duration(minutes: 1),
-        (_) {
+        (_) async {
           point = 2300;
         },
       );
+
+      Timer.periodic(
+        Duration(minutes: 5),
+        (_) async {
+          await FindSymbolsWithAmplitude();
+        },
+      );
     });
+  }
+
+  Future<bool> FindSymbolsWithAmplitude() async {
+    List<String> symbolsWithAmplitude = [];
+    bool findFlag = false;
+    for (String symbol in SymbolList) {
+      List<BinanceCandle>? candleList =
+          SymbolCandle[symbol]?.cast<BinanceCandle>();
+      point -= 1;
+      GetCandle(symbol, IntervalTime.m5).then(
+        (value) {
+          if (candleList != null && candleList.isNotEmpty) {
+            // 최근 1분(현재 봉)의 종가와 이전 1분(이전 봉)의 종가를 가져옵니다.
+            double high = double.parse(candleList[candleList.length - 2].High);
+            double low = double.parse(candleList[candleList.length - 2].Low);
+
+            // 변동폭 계산 (Amplitude 계산)
+            double amplitude = ((high - low) / low).abs() * 100;
+            print(amplitude);
+            // 변동폭이 1%를 넘는 경우 해당 심볼을 결과 리스트에 추가하고, 해당 Symbol은 SymbolSelect에서 true로 변경합니다.
+            if (amplitude > 1.0) {
+              symbolsWithAmplitude.add(symbol);
+              SymbolSelect[symbol] = true;
+              findFlag = true;
+              print("symbol : ${symbol} , amplitude : ${amplitude}");
+              Get.closeAllSnackbars();
+              Get.snackbar('CryptoCoin', '변동률이 큰 암호화폐가 감지되었습니다.');
+            }
+          }
+        },
+      );
+    }
+    return findFlag;
   }
 
   Future<void> GetSymbol() async {

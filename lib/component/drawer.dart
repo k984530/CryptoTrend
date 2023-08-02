@@ -1,3 +1,4 @@
+import 'package:CryptoTrend/controller/BinanceApiController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -103,6 +104,14 @@ Users are encouraged to periodically review the Privacy Policy to stay informed 
             },
             leading: Icon(Icons.mobile_friendly),
             title: Text("Privacy Policy"),
+          ),
+          ListTile(
+            onTap: () async {
+              await Get.find<BinanceApiController>().FindSymbolsWithAmplitude();
+              print('test');
+            },
+            title: Text("Test"),
+            leading: Icon(Icons.mobile_friendly),
           ),
         ],
       ),
